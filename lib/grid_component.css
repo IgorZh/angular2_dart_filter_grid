@@ -1,0 +1,11 @@
+.tbl {
+    width: 100%;
+}
+.tbl th {
+    text-align: left;
+    padding: 4px 12px;
+}
+.tbl td {
+    border-top: 1px solid #eee;
+    padding: 4px 12px;
+}

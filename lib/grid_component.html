@@ -1,0 +1,15 @@
+<div class="control">
+    <table class="tbl">
+        <tbody>
+        <tr>
+            <th *ngFor="let col of columns"
+                (click)="onSort(col)">
+                {{col.title}}
+            </th>
+        </tr>
+        <tr *ngFor="let row of rows">
+            <td *ngFor="let col of columns" (click)="onFilter(col, col.getValue(row))">{{col.getValue(row)}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
