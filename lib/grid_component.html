@@ -1,14 +1,19 @@
 <div class="control">
+    <i-filter [input]="input" [filterColumnSettings]="filterColumnSettings" (onFiltered)="onFiltered()"></i-filter>
     <table class="tbl">
         <tbody>
         <tr>
             <th *ngFor="let col of columns"
                 (click)="onSort(col)">
                 {{col.title}}
+                <!--<span [ngSwitch]="appliedSorters[col.name]">-->
+                  <!--<span *ngSwitchWhen="sortOrder.asc">asc</span>-->
+                  <!--<span *ngSwitchWhen="sortOrder.desc">desc</span>-->
+                <!--</span>-->
             </th>
         </tr>
         <tr *ngFor="let row of rows">
-            <td *ngFor="let col of columns" (click)="onFilter(col, col.getValue(row))">{{col.getValue(row)}}</td>
+            <td *ngFor="let col of columns">{{col.getValue(row)}}</td>
         </tr>
         </tbody>
     </table>

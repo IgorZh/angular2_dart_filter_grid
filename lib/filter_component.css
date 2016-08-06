@@ -1,0 +1,8 @@
+.filter {
+
+}
+.filter-list {
+    max-height: 160px;
+    overflow: auto;
+    padding: 0;
+}

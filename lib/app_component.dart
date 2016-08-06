@@ -4,6 +4,7 @@ import 'grid_component.dart';
 import 'user_service.dart';
 import 'dart:async';
 import 'user.dart';
+import 'filter_column_settings.dart';
 
 @Component(
       selector: 'my-app',
@@ -16,9 +17,15 @@ class AppComponent implements OnInit {
 
    AppComponent(this._userService);
 
-   List<User> users;
+   Future<List<User>> users;
 
-   Future<Null> ngOnInit() async {
-      users = await _userService.getUsers();
+   List<FilterColumnSettings<User>> filterColumnSettings = [
+      new FilterColumnSettings<User>('gender', 'Gender', (User user) => user.gender, (User a, String b) => a.gender == b),
+      new FilterColumnSettings<User>('department', 'Department', (User user) => user.department, (User a, String b) => a.department == b),
+      new FilterColumnSettings<User>('city', 'City', (User user) => user.address.city, (User a, String b) => a.address.city == b)
+   ];
+
+   void ngOnInit() {
+      users = _userService.getUsers();
    }
 }
