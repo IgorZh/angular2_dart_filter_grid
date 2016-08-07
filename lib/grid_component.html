@@ -3,17 +3,17 @@
     <table class="tbl">
         <tbody>
         <tr>
-            <th *ngFor="let col of columns"
+            <th *ngFor="let col of columnSettings"
                 (click)="onSort(col)">
                 {{col.title}}
-                <!--<span [ngSwitch]="appliedSorters[col.name]">-->
-                  <!--<span *ngSwitchWhen="sortOrder.asc">asc</span>-->
-                  <!--<span *ngSwitchWhen="sortOrder.desc">desc</span>-->
-                <!--</span>-->
+                <span [ngSwitch]="appliedSorters[col.name] == null ? 0 : appliedSorters[col.name].index">
+                  <span *ngSwitchWhen="1">&uarr;</span>
+                  <span *ngSwitchWhen="2">&darr;</span>
+                </span>
             </th>
         </tr>
         <tr *ngFor="let row of rows">
-            <td *ngFor="let col of columns">{{col.getValue(row)}}</td>
+            <td *ngFor="let col of columnSettings">{{col.getValue(row)}}</td>
         </tr>
         </tbody>
     </table>
