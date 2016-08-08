@@ -1,20 +1,21 @@
 import 'package:angular2/core.dart';
 
 import 'grid_component.dart';
-import 'user_service.dart';
+import 'filter_component.dart';
+import 'filter_service.dart';
 import 'dart:async';
 import 'user.dart';
 import 'filter_column_settings.dart';
-import 'sort_column_settings.dart';
+import 'column_settings.dart';
 
 @Component(
     selector: 'my-app',
     templateUrl: 'app_component.html',
-    directives: const [GridComponent],
-    providers: const [UserService]
+    directives: const [GridComponent, FilterComponent],
+    providers: const [FilterService]
 )
 class AppComponent implements OnInit {
-  final UserService _userService;
+  final FilterService _userService;
 
   AppComponent(this._userService);
 
@@ -32,29 +33,27 @@ class AppComponent implements OnInit {
         String b) => a.address.city == b)
   ];
 
-  List<SortColumnSettings<User>> sortColumnSettings = [
-    new SortColumnSettings<User>('name',
+  List<ColumnSettings<User>> sortColumnSettings = [
+    new ColumnSettings<User>(
+        'name',
         'Name',
-        (User user) => user.name,
-        (User a, User b) => a.name.compareTo(b.name),
-        (User a, User b) => b.name.compareTo(a.name)
-    ),
-    new SortColumnSettings<User>(
-        'age', 'Age', (User user) => user.age, (User a, User b) =>
-        a.age.compareTo(b.age), (User a, User b) => b.age.compareTo(a.age)),
-    new SortColumnSettings<User>(
-        'gender', 'Gender', (User user) => user.gender, (User a, User b) =>
-        a.gender.compareTo(b.gender), (User a, User b) =>
-        b.gender.compareTo(a.gender)),
-    new SortColumnSettings<User>(
-        'department', 'Department', (User user) => user.department, (User a,
-        User b) => a.department.compareTo(b.department), (User a, User b) =>
-        b.department.compareTo(a.department)),
-    new SortColumnSettings<User>(
-        'address', 'Address', (User user) => '${user.address.city}, ${user
-        .address.street}', (User a, User b) =>
-        (a.address.city + a.address.street).compareTo(b.address.city + b.address.street),
-        (User a, User b) => (b.address.city + b.address.street).compareTo(a.address.city + a.address.street))
+        (User user) => user.name),
+    new ColumnSettings<User>(
+        'age',
+        'Age',
+        (User user) => user.age),
+    new ColumnSettings<User>(
+        'gender',
+        'Gender',
+        (User user) => user.gender),
+    new ColumnSettings<User>(
+        'department',
+        'Department',
+        (User user) => user.department),
+    new ColumnSettings<User>(
+        'address',
+        'Address',
+        (User user) => '${user.address.city}, ${user.address.street}')
   ];
 
   void ngOnInit() {

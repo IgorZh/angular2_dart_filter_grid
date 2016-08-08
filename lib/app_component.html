@@ -1,5 +1,5 @@
 <div class="wrap">
-    <i-grid [input]="users"
-            [filterColumnSettings]="filterColumnSettings"
+    <i-filter [filterColumnSettings]="filterColumnSettings"></i-filter>
+    <i-grid [filterColumnSettings]="filterColumnSettings"
             [columnSettings] = "sortColumnSettings"></i-grid>
 </div>

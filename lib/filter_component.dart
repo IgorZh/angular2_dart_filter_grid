@@ -16,26 +16,30 @@ class FilterComponent implements OnInit {
   final FilterService _filterService;
 
   @Input()
-  Future<List> input;
-  @Input()
   List<FilterColumnSettings> filterColumnSettings;
-
-  @Output()
-  EventEmitter onFiltered = new EventEmitter();
 
   List rows;
   final List<FilterLine> filterLines;
+  final Map<String, List> appliedFilters;
 
   FilterComponent(this._filterService)
-        : filterLines = new List<FilterLine>(){}
+        : filterLines = new List<FilterLine>(),
+          appliedFilters = new Map<String, List>();
 
-  void getFilterColumns() {
-    filterLines.clear();
 
+
+
+  void toggleFilter(String lineName, FilterOption option) {
+    option.checked = !option.checked;
+
+    _updateFilterLines();
+  }
+
+  void _createFilterLines (){
     // тут бы очень помогла функция distinct, тогда это было бы оформлено в виде лямбд, но я ее не обрнаружил ;(
     for (FilterColumnSettings filterColumnSetting in filterColumnSettings) {
       var filterLine = new FilterLine(filterColumnSetting.name);
-      var appliedFilter = _filterService.appliedFilters[filterColumnSetting.name];
+      var appliedFilter = appliedFilters[filterColumnSetting.name];
 
       filterLines.add(filterLine);
 
@@ -47,23 +51,34 @@ class FilterComponent implements OnInit {
 
         filterLine.values.add(new FilterOption(
             value,
-            rows.where((r) => filterColumnSetting.filter(r, value)).length,
-            appliedFilter != null && appliedFilter.any((f) => f == value)
+            rows.where((r) => filterColumnSetting.filter(r, value)).length
+            //appliedFilter != null && appliedFilter.any((f) => f == value)
         ));
       }
     }
   }
 
-  Future<List> ngOnInit() async {
-    rows = await input;
-    getFilterColumns();
+  void _updateFilterLines (){
+    var f = new Map.fromIterable(filterLines,
+        key: (FilterLine item) => item.name,
+        value: (FilterLine item) => item.getAppliedFilters().map((FilterOption l) => l.value));
+    _filterService.applyFilters(f, filterColumnSettings);
+
+    for (FilterLine filterLine in filterLines) {
+      var filterColumnSetting = filterColumnSettings.firstWhere((setting) => setting.name == filterLine.name);
+
+      for (FilterOption option in filterLine.values) {
+        var value = option.value;
+
+        option.filtered = rows.where((r) => filterColumnSetting.filter(r, value)).length;
+      }
+    }
   }
 
-  void onClick(bool checked, String columnName, value) {
-    _filterService.toggleFilter(checked, columnName, value);
 
-    rows = _filterService.filteredRows;
-    getFilterColumns();
-    onFiltered.emit(value);
+  Future<List> ngOnInit() async {
+    rows = await _filterService.getUsers();
+
+    _createFilterLines();
   }
 }

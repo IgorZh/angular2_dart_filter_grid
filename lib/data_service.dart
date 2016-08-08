@@ -7,7 +7,7 @@ import 'mock_users.dart';
 
 
 @Injectable()
-class UserService {
+class DataService {
   //TODO: тут бы json на соответсвие схеме проверить
   Future<List<User>> getUsers() async =>
       mockUsers.map((json) => new User.fromJson(json)).toList();

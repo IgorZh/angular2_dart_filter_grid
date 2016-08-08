@@ -3,7 +3,7 @@ import 'dart:async';
 import "package:test/test.dart";
 
 import 'package:angular2_dart_filter_grid/mock_users.dart';
-import 'package:angular2_dart_filter_grid/user_service.dart';
+import 'package:angular2_dart_filter_grid/data_service.dart';
 
 
 void main() {
@@ -19,7 +19,7 @@ void main() {
       }
     }];
 
-    var users = await new UserService().getUsers();
+    var users = await new DataService().getUsers();
 
     expect(users.length, equals(1));
   });

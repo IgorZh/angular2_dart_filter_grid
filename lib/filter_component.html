@@ -4,12 +4,15 @@
             <div  *ngFor="let filterLine of filterLines" class="col-1-3">
                 {{filterLine.name}}
                 <ul class="filter-list">
-                    <li *ngFor="let val of filterLine.values">
-                        <label><input [checked]="val.checked"
-                                      type="checkbox"
-                                      (change)="onClick(val.checked, filterLine.name, val.value)"> {{val.value}} {{val.filtered}}
-                        </label>
-                    </li>
+                    <template ngFor let-val [ngForOf]="filterLine.values" >
+                        <li *ngIf="val.filtered != 0">
+                            <label><input (click)="toggleFilter(filterLine.name, val)"
+                                          [checked]="val.checked"
+                                          type="checkbox">
+                                {{val.value}} {{val.filtered}}
+                            </label>
+                        </li>
+                    </template>
                 </ul>
             </div>
         </div>

@@ -1,18 +1,18 @@
 import 'package:angular2/core.dart';
 
-import 'sort_column_settings.dart';
+import 'column_settings.dart';
 import 'sort_order.dart';
 
 @Injectable()
 class SortService {
-  List<SortColumnSettings> sortColumnSettings;
+  List<ColumnSettings> sortColumnSettings;
 
   final Map<String, SortOrder> appliedSorters;
 
   SortService()
       : appliedSorters = new Map<String, SortOrder>() {}
 
-  void init(List<SortColumnSettings> sortColumnSettings) {
+  void init(List<ColumnSettings> sortColumnSettings) {
     this.sortColumnSettings = sortColumnSettings;
 
     for (var sortColumnSetting in sortColumnSettings) {
@@ -28,15 +28,32 @@ class SortService {
   }
 
   void applySort(List rows) {
+    rows.sort(compare);
+  }
+
+  int compare(a, b) {
+    var compare = 0;
+    var power = 10 ^ appliedSorters.length;
     for (var key in appliedSorters.keys) {
       var column = sortColumnSettings.firstWhere((column) =>
-        column.name == key);
+      column.name == key);
 
-      SortOrder sortOrder = appliedSorters[key];
-      if(sortOrder != SortOrder.none)
-        sortOrder == SortOrder.asc ? rows.sort(column.compareAsc) : rows.sort(column.compareDesc);
+      var directional;
+      switch (appliedSorters[key]) {
+        case SortOrder.asc:
+          directional = 1;
+          break;
+        case SortOrder.desc:
+          directional = -1;
+          break;
+        default:
+          directional = 0;
+      }
+
+      compare += directional * power * column.getValue(a).compareTo(column.getValue(b));
+      power /= 10;
     }
-    //if(compare != null)
+    return compare;
   }
 
 }

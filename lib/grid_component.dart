@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:angular2/core.dart';
 
-import 'sort_column_settings.dart';
 import 'user.dart';
-import 'filter_component.dart';
 import 'filter_service.dart';
 import 'sort_service.dart';
 import 'filter_column_settings.dart';
@@ -15,8 +13,7 @@ import 'sort_order.dart';
     selector: 'i-grid',
     templateUrl: 'grid_component.html',
     styleUrls: const ['grid_component.css'],
-    directives: const [FilterComponent],
-    providers: const [FilterService, SortService]
+    providers: const [SortService]
   )
 class GridComponent implements OnInit{
   final FilterService _filterService;
@@ -25,8 +22,6 @@ class GridComponent implements OnInit{
 
   final sortOrder = SortOrder;
 
-  @Input()
-  Future<List> input;
   @Input()
   List<FilterColumnSettings> filterColumnSettings;
   @Input()
@@ -37,7 +32,7 @@ class GridComponent implements OnInit{
 
   List rows;
 
-  void onSort(SortColumnSettings<User> col) {
+  void onSort(ColumnSettings<User> col) {
     _sortService.toggleSort(col.name);
     _sortService.applySort(rows);
     appliedSorters = _sortService.appliedSorters;
@@ -48,9 +43,8 @@ class GridComponent implements OnInit{
   }
 
   Future<List> ngOnInit() async {
-    _filterService.init(input, filterColumnSettings);
+    rows = await _filterService.getUsers();
     _sortService.init(columnSettings);
     appliedSorters = _sortService.appliedSorters;
-    rows = await input;
   }
 }
