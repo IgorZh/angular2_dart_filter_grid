@@ -10,5 +10,5 @@ import 'mock_users.dart';
 class DataService {
   //TODO: тут бы json на соответсвие схеме проверить
   Future<List<User>> getUsers() async =>
-      mockUsers.map((json) => new User.fromJson(json)).toList();
+      mockUsers.map((json) => new User.fromJson(json)).toList() as List<User>;
 }

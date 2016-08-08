@@ -5,9 +5,9 @@
             <th *ngFor="let col of columnSettings"
                 (click)="onSort(col)">
                 {{col.title}}
-                <span [ngSwitch]="appliedSorters[col.name] == null ? 0 : appliedSorters[col.name].index">
+                <span [ngSwitch]="appliedSorters[col.name]">
                   <span *ngSwitchWhen="1">&uarr;</span>
-                  <span *ngSwitchWhen="2">&darr;</span>
+                  <span *ngSwitchWhen="(-1)">&darr;</span>
                 </span>
             </th>
         </tr>

@@ -1,4 +1,4 @@
-typedef Object GetValue<T>(T a);
+typedef dynamic GetValue<T>(T a);
 
 class ColumnSettings<T>{
   String name, title;
