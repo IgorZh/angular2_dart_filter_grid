@@ -18,7 +18,7 @@ class User {
     user.age = userJson['age'];
     user.gender = userJson['gender'];
     user.department = userJson['department'];
-    user.address = new Address.fromJson(userJson['address']);
+    user.address = new Address.fromJson(userJson['address'] ?? {});
 
     return user;
   }

@@ -2,14 +2,13 @@
     <div class="filter">
         <div class="grid">
             <div  *ngFor="let filterLine of filterLines" class="col-1-{{filterLines.length}}">
-                {{filterLine.name}}
+                {{filterLine.title}}
                 <ul class="filter-list">
                     <template ngFor let-val [ngForOf]="filterLine.values" >
                         <li *ngIf="val.filtered != 0">
-                            <label><input (click)="toggleFilter(filterLine.name, val)"
-                                          [checked]="val.checked"
+                            <label><input (click)="toggleFilter(val)"
                                           type="checkbox">
-                                {{val.value}} ({{val.filtered}})
+                                {{val.value | isNullOrEmpty}} ({{val.filtered}})
                             </label>
                         </li>
                     </template>

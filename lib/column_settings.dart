@@ -1,9 +1,17 @@
-typedef dynamic GetValue<T>(T a);
+import 'src/get_value_typedef.dart';
 
-class ColumnSettings<T>{
-  String name, title;
+class ColumnSettings<T, TR> {
+  final String name, title;
 
-  ColumnSettings(this.name, this.title, this.getValue);
+  ColumnSettings(this.name,
+      this.title,
+      this.getValue,
+      [bool isFilter, bool isShow]) {
+    this.isFilter = isFilter ?? false;
+    this.isShow = isShow ?? true;
+  }
 
-  GetValue<T> getValue;
+  GetValue<T, TR> getValue;
+
+  bool isFilter, isShow;
 }

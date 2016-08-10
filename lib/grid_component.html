@@ -1,8 +1,13 @@
+<i-filter
+        [filterColumnSettings]="columnSettings"
+        [rows]="rows"
+        (filtered)="onFiltered($event)">
+</i-filter>
 <div class="control">
     <table class="tbl">
         <tbody>
         <tr>
-            <th *ngFor="let col of columnSettings"
+            <th *ngFor="let col of showedColumns"
                 (click)="onSort(col)">
                 {{col.title}}
                 <span [ngSwitch]="appliedSorters[col.name]">
@@ -12,7 +17,7 @@
             </th>
         </tr>
         <tr *ngFor="let row of rows">
-            <td *ngFor="let col of columnSettings">{{col.getValue(row)}}</td>
+            <td *ngFor="let col of showedColumns">{{col.getValue(row) | isNullOrEmpty}}</td>
         </tr>
         </tbody>
     </table>

@@ -1,61 +1,50 @@
 import 'package:angular2/core.dart';
 
-import 'grid_component.dart';
-import 'filter_component.dart';
-import 'filter_service.dart';
-import 'dart:async';
 import 'user.dart';
+import 'address.dart';
 import 'column_settings.dart';
+import 'grid_component.dart';
 
 @Component(
     selector: 'my-app',
     templateUrl: 'app_component.html',
-    directives: const [GridComponent, FilterComponent],
-    providers: const [FilterService]
+    directives: const [GridComponent]
 )
 class AppComponent implements OnInit {
-  final FilterService _userService;
+  List<ColumnSettings<User, dynamic>> columnSettings;
 
-  List<ColumnSettings<User>> sortColumnSettings;
-  List<ColumnSettings<User>> filterColumnSettings;
-  Future<List<User>> users;
+  void ngOnInit() => _componentSettings();
 
-  AppComponent(this._userService);
-
-  void _componentSettings(){
-    sortColumnSettings = <ColumnSettings<User>>[
-      new ColumnSettings<User>(
+  void _componentSettings() {
+    columnSettings = <ColumnSettings<User, dynamic>>[
+      new ColumnSettings<User, String>(
           'name',
           'Name',
           (user) => user.name),
-      new ColumnSettings<User>(
+      new ColumnSettings<User, int>(
           'age',
           'Age',
           (user) => user.age),
-      new ColumnSettings<User>(
+      new ColumnSettings<User, String>(
           'gender',
           'Gender',
-          (user) => user.gender),
-      new ColumnSettings<User>(
+          (user) => user.gender,
+          true),
+      new ColumnSettings<User, String>(
           'department',
           'Department',
-          (user) => user.department),
-      new ColumnSettings<User>(
+          (user) => user.department,
+          true),
+      new ColumnSettings<User, Address>(
           'address',
           'Address',
-          (user) => user.address)
+          (user) => user.address),
+      new ColumnSettings<User, String>(
+          'city',
+          'City',
+          (user) => user.address.city,
+          true,
+          false)
     ];
-
-    filterColumnSettings = new List<ColumnSettings<User>>.from(sortColumnSettings
-        .where((column) => ['gender', 'department'].contains(column.name)));
-    filterColumnSettings.add(new ColumnSettings<User>(
-        'city',
-        'City',
-        (user) => user.address.city));
-  }
-
-  void ngOnInit() {
-    users = _userService.getUsers();
-    _componentSettings();
   }
 }
