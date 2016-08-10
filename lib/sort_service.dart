@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:angular2/core.dart';
 import 'sort_request.dart';
 
@@ -12,23 +10,15 @@ class SortService<T> {
 
   int _compare(a, b, List<SortRequest> sortRequest) {
     var compare = 0;
-    var power = pow(10, sortRequest.length);
 
     for (var sort in sortRequest) {
-      int tmp;
-      var aVal = sort.getValue(a),
-          bVal = sort.getValue(b);
+      var aVal = sort.getValue(a) ?? '',
+          bVal = sort.getValue(b) ?? '';
 
-      if (aVal == null)
-        tmp = -1;
-      else if (bVal == null)
-        tmp = 1;
-      else
-        tmp = aVal.compareTo(bVal);
+      compare = sort.direction * aVal.compareTo(bVal);
 
-      compare += sort.direction * power * tmp;
-
-      power ~/= 10;
+      if(compare != 0)
+        return compare;
     }
     return compare;
   }
